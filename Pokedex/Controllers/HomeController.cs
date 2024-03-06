@@ -14,18 +14,29 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    
-    public IActionResult Index()
+     public IActionResult Index()
     {
         List<Pokemon> pokemons = [];
-        using (StreamReader leitor = new("Data\\pokemon.json"))
+        using (StreamReader leitor = new("Data\\pokemons.json"))
         {
             string dados = leitor.ReadToEnd();
             pokemons = JsonSerializer.Deserialize<List<Pokemon>>(dados);
         }
-        return View();
+        List<Tipo> tipos = [];
+        using (StreamReader leitor = new("Data\\tipos.json"))
+        {
+            string dados = leitor.ReadToEnd();
+            tipos = JsonSerializer.Deserialize<List<Tipo>>(dados);
+        }
+        ViewData["Tipos"] = tipos;
+        return View(pokemons);
     }
 
+    public IActionResult Details(int id)
+    {
+        return View();
+    }
+    
     public IActionResult Privacy()
     {
         return View();
